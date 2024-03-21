@@ -1,4 +1,5 @@
 //show cart
+showtotals();
 
 (function(){
     const cartInfo = document.getElementById("cart-info");
@@ -14,15 +15,16 @@
     const clearCart = document.getElementById("clear-cart");
     clearCart.addEventListener("click",function(){
         
-        const cart = document.getElementById("cart");
-        var f= cart.firstElementChild;
-        while(f.classList.contains("cart-item")){
-            f.remove();
-            f= cart.firstElementChild;
+        let cartItems = document.getElementsByClassName("cart-item");
+        console.log(cartItems);
+        cartItems;
+        while(cartItems.length>0){
+            cartItems[0].remove();
         }
         document.getElementById('cart-total').textContent = 0;
-        document.querySelector('.item-total').textContent = 0;
-        document.getElementById('item-count').textContent = 0;
+        // document.querySelector('.item-total').textContent = 0;
+        // document.getElementById('item-count').textContent = 0;
+        showtotals();
     });
 })();
 
@@ -90,33 +92,37 @@
         }
         });
     });
-    //show totals
-    function showtotals(){
-        const total=[];
-        const items=document.querySelectorAll(".cart-item-price");
-
-        items.forEach(function(item){
-            total.push(parseFloat(item.textContent));
-        });
-        const totalMoney=total.reduce(function(total,item){
-            total+=item;
-            return total;
-        },0);
-        const finalMoney = totalMoney.toFixed(2);
-        
-        document.getElementById('cart-total').textContent = finalMoney;
-        document.querySelector('.item-total').textContent = finalMoney;
-        document.getElementById('item-count').textContent = total.length;
-    }
 })();
+
+
+
+//show totals
+function showtotals(){
+    const total=[];
+    const items=document.querySelectorAll(".cart-item-price");
+
+    items.forEach(function(item){
+        total.push(parseFloat(item.textContent));
+    });
+    const totalMoney=total.reduce(function(total,item){
+        total+=item;
+        return total;
+    },0);
+    const finalMoney = totalMoney.toFixed(2);
+    
+    document.getElementById('cart-total').textContent = finalMoney;
+    document.querySelector('.item-total').textContent = finalMoney;
+    document.getElementById('item-count').textContent = total.length;
+}
+
 
 //to get filter buttons working
 (function(){
 
-    const buttons = document.querySelectorAll('.btn');
+    const buttons = document.getElementsByClassName('filter-btn');
     const storeItems= document.querySelectorAll('.store-item');
     //console.log(buttons);
-    buttons.forEach((button)=> {
+    Array.from(buttons).forEach((button)=> {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const filter = e.target.dataset.filter;
