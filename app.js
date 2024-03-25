@@ -1,6 +1,41 @@
-//show cart
-showtotals();
+let cartItems=[];
 
+// add item from localstorage
+
+function fetchSavedItems(){
+
+    cartItems=JSON.parse(localStorage.getItem("cartItems"));
+
+
+    for(let i=0;i<cartItems.length; i++){
+    item=cartItems[i];
+    const cartItem=document.createElement('div');
+    cartItem.classList.add('cart-item','d-flex','justify-content-between','text-capitalize','my-3');
+
+    cartItem.innerHTML=`<img src="${item.img}" class="img-fluid rounded-circle" id="item-img" alt="">
+    <div class="cart-item-text">
+
+      <p id="cart-item-title" class="font-weight-bold mb-0">${item.name}</p>
+      <span>₹</span>
+      <span id="cart-item-price" class="cart-item-price" class="mb-0">${item.price}</span>
+    </div>
+    <a href="#" id='cart-item-remove' class="cart-item-remove">
+      <i class="fas fa-trash"></i>
+    </a>
+    </div>`;
+    //select cart
+    const cart=document.getElementById("cart");
+    const total=document.querySelector(".cart-total-container");
+    cart.insertBefore(cartItem,total);
+    showtotals();
+    }
+
+}
+
+fetchSavedItems();
+
+
+//show cart
 (function(){
     const cartInfo = document.getElementById("cart-info");
     const cart = document.getElementById("cart");
@@ -21,6 +56,9 @@ showtotals();
         while(cartItems.length>0){
             cartItems[0].remove();
         }
+        cartItems=[];
+        localStorage.setItem("cartItems",JSON.stringify(cartItems));
+
         document.getElementById('cart-total').textContent = 0;
         // document.querySelector('.item-total').textContent = 0;
         // document.getElementById('item-count').textContent = 0;
@@ -86,6 +124,9 @@ showtotals();
         const cart=document.getElementById("cart");
         const total=document.querySelector(".cart-total-container");
 
+        cartItems.push(item)
+        localStorage.setItem("cartItems",JSON.stringify(cartItems));
+        
         cart.insertBefore(cartItem,total);
         alert("item added to cart");
         showtotals();
