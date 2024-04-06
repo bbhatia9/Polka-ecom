@@ -1,8 +1,127 @@
 let cartItems=[];
+const StoreItems =[{
+    name:"sweet item1",
+    img:"img/sweets-1.jpeg",
+    price:5
+},
+{
+    name:"sweet item2",
+    img:"img/sweets-2.jpeg",
+    price:10
+},
+{
+    name:"sweet item3",
+    img:"img/sweets-3.jpeg",
+    price:15
+},
+{
+    name:"cupcake Item1",
+    img:"img/cupcake-1.jpeg",
+    price:5
+},
+{
+    name:"cupcake Item2",
+    img:"img/cupcake-2.jpeg",
+    price:10
+},
+{
+    name:"cupcake Item3",
+    img:"img/cupcake-3.jpeg",
+    price:15
+},
+{
+    name:"cake Item1",
+    img:"img/cake-1.jpeg",
+    price:5
+},
+{
+    name:"cake Item2",
+    img:"img/cake-2.jpeg",
+    price:10
+},
+{
+    name:"cake Item3",
+    img:"img/cake-3.jpeg",
+    price:15
+},
+{
+    name:"dougnut Item1",
+    img:"img/doughnut-1.jpeg",
+    price:5
+
+},
+{
+    name:"dougnut Item2",
+    img:"img/doughnut-2.jpeg",
+    price:10
+},
+{
+    name:"dougnut Item3",
+    img:"img/doughnut-3.jpeg",
+    price:15
+}
+];
+
+function renderStoreItems(){
+    let StoreEl = document.getElementById("store-items");
+    let ItemsToBeRendered=""; 
+
+if(StoreEl){
+    for(let i=0;i<StoreItems.length;i++){
+        
+        item=StoreItems[i];
+        
+        ItemsToBeRendered += `<div class="col-10 col-sm-6 col-lg-4 mx-auto my-3 store-item cakes" data-item="cakes">
+        <div class="card ">
+          <div class="img-container">
+            <img src="${item.img}" class="card-img-top store-img" alt="">
+            <span class="store-item-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="card-text d-flex justify-content-between text-capitalize">
+              <h5 id="store-item-name">${item.name}</h5>
+              <h5 class="store-item-value">₹ <strong id="store-item-price" class="font-weight-bold">${item.price}</strong></h5>
+            </div>
+          </div>
+          </div>
+        </div>`
+    }
+
+    StoreEl.innerHTML+=ItemsToBeRendered;
+}
 
 
 
-(function(){
+//     let singleitem=`<div class="col-10 col-sm-6 col-lg-4 mx-auto my-3 store-item cakes" data-item="cakes">
+//     <div class="card ">
+//       <div class="img-container">
+//         <img src="${item.img}" class="card-img-top store-img" alt="">
+//         <span class="store-item-icon">
+//           <i class="fas fa-shopping-cart"></i>
+//         </span>
+//       </div>
+//       <div class="card-body">
+//         <div class="card-text d-flex justify-content-between text-capitalize">
+//           <h5 id="store-item-name">${item.name}</h5>
+//           <h5 class="store-item-value">₹ <strong id="store-item-price" class="font-weight-bold">${item.price}</strong></h5>
+
+//         </div>
+//       </div>
+
+
+//     </div>
+    
+//   </div>`;
+
+
+}
+renderStoreItems();
+
+
+//render items on checkout page
+const renderoncheckout=function(){
     cartItems=JSON.parse(localStorage.getItem("cartItems"));
 
     let checkoutItems = document.getElementById("checkout-items");
@@ -11,11 +130,47 @@ let cartItems=[];
             
         let str="";
         for(let i=0;i<cartItems.length; i++){
-            str+=`<li> ${cartItems[i].name} , price: ${cartItems[i].price}</li>`;
+            let checkoutImg=cartItems[i].img;
+            checkoutImg=checkoutImg.substring(9);
+            checkoutImg="img/"+checkoutImg;
+            console.log(checkoutImg);
+            str+=`<li> <img src="${checkoutImg}" style="width:10%;height:auto;"> ${cartItems[i].name} , price: ${cartItems[i].price}</li>`;
         }
         
         checkoutItems.innerHTML=str;
-    }git 
+    }
+};
+
+renderoncheckout();
+
+
+// place order and generate orderId
+(function placeOrder(){
+    let OrderBtn = document.getElementById("placeOrder");
+
+    let totalsEl = document.getElementById("totalprice");
+    if(totalsEl){
+        cartItems=JSON.parse(localStorage.getItem("cartItems"));
+        let totPrice=0;
+        for(let i=0;i<cartItems.length;i++){
+            totPrice+=Number(cartItems[i].price);
+        }
+
+        totalsEl.textContent+=totPrice;
+    }
+
+    if(OrderBtn){
+        OrderBtn.addEventListener("click",function(){
+            
+            let OrderId=Math.floor(Math.random()*10000);
+            
+            alert("Order Placed",OrderId);
+            cartItems=[];
+            localStorage.setItem("cartItems",JSON.stringify(cartItems));
+            // renderoncheckout();
+            window.location.href = "index.html";
+        })
+    }
 })();
 
 
